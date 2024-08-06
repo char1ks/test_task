@@ -1,7 +1,6 @@
 package task4;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
@@ -14,38 +13,34 @@ public class Main {
         }
         String filePath = args[0];
         int[] nums = readNumbersFromFile(filePath);
+        if (nums.length == 0) {
+            System.out.println("Не удалось прочитать числа из файла.");
+            return;
+        }
         int minMoves = minMoves2(nums);
         System.out.println("Минимальное количество ходов: " + minMoves);
     }
 
     private static int[] readNumbersFromFile(String filePath) {
-        int[] nums;
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            int count = 0;
-            while (reader.readLine() != null) {
-                count++;
-            }
-            nums = new int[count];
-
-            reader.close(); // Закрываем BufferedReader после использования
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new int[0]; // Возвращаем пустой массив в случае ошибки
-        }
-
+        int[] nums = new int[0];
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            int index = 0;
+            int count = 0;
             while ((line = reader.readLine()) != null) {
-                nums[index++] = Integer.parseInt(line);
+                nums = Arrays.copyOf(nums, count + 1);
+                nums[count] = Integer.parseInt(line);
+                count++;
             }
         } catch (IOException e) {
             e.printStackTrace();
             return new int[0]; // Возвращаем пустой массив в случае ошибки
+        } catch (NumberFormatException e) {
+            System.err.println("Ошибка формата числа в файле: " + e.getMessage());
+            return new int[0]; // Возвращаем пустой массив в случае ошибки
         }
-
         return nums;
     }
+
     public static int minMoves2(int[] nums) {
         Arrays.sort(nums);
         int mid = nums[nums.length / 2];
