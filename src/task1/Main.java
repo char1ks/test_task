@@ -4,12 +4,14 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+         if (args.length < 2) {
+            System.out.println("Необходимо ввести два параметра: n и m.");
+            return;
+        }
 
-        System.out.print("Введите n: ");
-        int n = scanner.nextInt();
-        System.out.print("Введите m: ");
-        int m = scanner.nextInt();
+        int n = Integer.parseInt(args[0]);
+        int m = Integer.parseInt(args[1]);
+
         System.out.println(findCircularArrayPath(n, m));
     }
     public static String findCircularArrayPath(int n, int m) {
